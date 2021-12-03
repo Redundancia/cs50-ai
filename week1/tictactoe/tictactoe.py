@@ -94,6 +94,8 @@ def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
+    if winner(board) != None:
+        return True
     for row in board:
         for field in row:
             if board[row][field] == EMPTY:
