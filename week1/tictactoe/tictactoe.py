@@ -23,6 +23,7 @@ def player(board):
     Returns player who has the next turn on a board.
     """
     empty_field_counter = 0
+    return sum([1 for field in row for row in board if field == EMPTY])
     for row in board:
         for field in row:
             if field == EMPTY:
@@ -34,7 +35,12 @@ def actions(board):
     """
     Returns set of all possible actions (i, j) available on the board.
     """
-    raise NotImplementedError
+    possible_actions = []
+    for row_counter in range(len(board)):
+        for column_counter in range(len(board[row_counter])):
+            if board[row_counter, column_counter] == EMPTY:
+                possible_actions.append((row_counter, column_counter))
+    return possible_actions
 
 
 def result(board, action):
