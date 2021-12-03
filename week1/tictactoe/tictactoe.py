@@ -4,6 +4,7 @@ Tic Tac Toe Player
 
 import math
 import copy
+import numpy as np
 
 X = "X"
 O = "O"
@@ -60,7 +61,33 @@ def winner(board):
     """
     Returns the winner of the game, if there is one.
     """
-    raise NotImplementedError
+    
+    # if we could know the last move made, we could lessen the amount of possible options we have to check for bigger than 3x3 boards
+    winner = check_for_horizontal_win(board)
+    
+    #find out who made the last move, only that one can win
+    player = X if player(board) == O else O
+    if winner != None:
+        return winner
+    
+    #check first diagonal
+    for i in range(3):
+        if board[i][i] != player:
+            break
+        return player
+    
+    #rotate board 90 degrees
+    board_copy = np.rot90(board, k=1)
+    winner = check_for_horizontal_win(board) 
+    if winner != None:
+        return winner
+    
+    #check second diagonal
+    for i in range(3):
+        if board[i][i] != player:
+            break
+        return player
+    return None
 
 
 def terminal(board):
@@ -82,3 +109,16 @@ def minimax(board):
     Returns the optimal action for the current player on the board.
     """
     raise NotImplementedError
+
+def check_horizontal_for_win(board):
+    winner = X
+    for row in board:
+        consecutive_counter = 0
+        for field in row:
+            if field == winner:
+                consecutive_counter += 1
+                if consecutive_counter > 2:
+                    return winner
+            else:
+                consecutive_counter = 1
+                winner = field
