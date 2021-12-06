@@ -121,42 +121,42 @@ def minimax(board):
     """
     move_values = []
     current_player = player(board)
-    print("X" if current_player == X  else "O")
     actions_list = actions(board)
     for action in actions_list:
         move_value =max_value(result(board,action)) if current_player == O else min_value(result(board,action))
         print(f"for action: {action}, best value: {move_value}")
         move_values.append(move_value)
+        if current_player == O and move_value == -1: 
+            break
+        if current_player == X and move_value == 1:
+            break
     optimal_move_index = move_values.index(max(move_values)) if current_player == X else move_values.index(min(move_values))
     print(f"best action: {actions_list[optimal_move_index]}, value: {max(move_values) if current_player == X else min(move_values)}")
     return actions_list[optimal_move_index]
 
 
-def max_value(board):
-
-    if terminal(board):
-        value =  utility(board)
-        return value
+def max_value(board,local_min=float('-inf'), local_max=float('inf')):
     value = float('-inf')
-    for action_index,action in enumerate(actions(board)):
-        new_possible_value = min_value(result(board,action))
-        value = max(value, new_possible_value)
-        #if value == 1:
-        #    break
-    return value
-
-
-def min_value(board):
-
     if terminal(board):
         value = utility(board)
         return value
-    value = float('inf')
     for action in actions(board):
-        new_possible_value = max_value(result(board, action))
+        new_possible_value = min_value(result(board,action),local_min=local_min, local_max=local_max)
+        value = max(value, new_possible_value)
+        local_min = value
+    return value
+
+
+def min_value(board,local_min=float('-inf'), local_max=float('inf')):
+    value = float('inf')
+    if terminal(board):
+        value = utility(board)
+        return value
+    for action in actions(board):
+        new_possible_value = max_value(result(board, action),local_min=local_min, local_max=local_max)
+        if local_min >= new_possible_value:
+            return new_possible_value
         value = min(value, new_possible_value)
-        #if value == -1:
-        #    break
     return value
 
 
