@@ -50,15 +50,15 @@ def result(board, action):
     Returns the board that results from making move (i, j) on the board.
     """
     update_board = copy.deepcopy(board)
-    if board[action[0]][action[1]] == EMPTY:
-        update_board[action[0]][action[1]] = player(board)
-    else:
-        raise ValueError("Field already in use")
-    #print(player(board))
-    #for row in board:
-    #    print(row)
-    #print()
-    #sleep(2)
+    try:
+        if board[action[0]][action[1]] == EMPTY:
+            update_board[action[0]][action[1]] = player(board)
+        else:
+            print("Field already in use")
+            raise ValueError("Field already in use")
+    except IndexError as ie:
+        print(ie)
+        raise IndexError
     return update_board
 
 
@@ -68,33 +68,39 @@ def winner(board):
     """
     
     # if we could know the last move made, we could lessen the amount of possible options we have to check for bigger than 3x3 boards
-    winner = check_for_horizontal_win(board)
-    
-    #find out who made the last move, only that one can win
-    current_player = X if player(board) == O else O
-    
-    if winner == current_player:
-        return current_player
-    
-    #check first diagonal
-    if board[0][0] == current_player:
-        if board[1][1] == current_player:
-            if board[2][2] == current_player:
-                return current_player
+    winner_players = [X, O]
 
+    possible_winner = check_for_horizontal_win(board)
+    if possible_winner in winner_players:
+        return possible_winner
+
+    #check first diagonal
+    for winner_player in winner_players:
+        is_won = True
+        for i in range(len(board[0])):
+            if board[i][i] != winner_player:
+                is_won = False
+                break
+        if is_won:
+            return winner_player
 
     #rotate board 90 degrees
     board_copy = np.rot90(board, k=1)
-    winner = check_for_horizontal_win(board) 
-    if winner == current_player:
-        return current_player
+
+    possible_winner = check_for_horizontal_win(board_copy) 
+    if possible_winner in winner_players:
+        return possible_winner
     
     #check second diagonal
-    if board[0][0] == current_player:
-        if board[1][1] == current_player:
-            if board[2][2] == current_player:
-                return current_player
-
+    for winner_player in winner_players:
+        is_won = True
+        for i in range(len(board[0])):
+            if board_copy[i][i] != winner_player:
+                is_won = False
+                break
+        if is_won:
+            return winner_player
+    return None
 
 def terminal(board):
     """
@@ -113,13 +119,12 @@ def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
-    if terminal(board):
-        return None
     move_values = []
     current_player = player(board)
+    print("X" if current_player == X  else "O")
     actions_list = actions(board)
     for action in actions_list:
-        move_value =max_value(result(board,action)) if current_player == X else min_value(result(board,action))
+        move_value =max_value(result(board,action)) if current_player == O else min_value(result(board,action))
         print(f"for action: {action}, best value: {move_value}")
         move_values.append(move_value)
     optimal_move_index = move_values.index(max(move_values)) if current_player == X else move_values.index(min(move_values))
@@ -128,43 +133,46 @@ def minimax(board):
 
 
 def max_value(board):
-    #for row in board:
-    #    print(row)
-    #print()
-    #sleep(2)
+
     if terminal(board):
-        return utility(board)
+        value =  utility(board)
+        return value
     value = float('-inf')
     for action_index,action in enumerate(actions(board)):
-        value = max(value, min_value(result(board, action)))
+        new_possible_value = min_value(result(board,action))
+        value = max(value, new_possible_value)
+        #if value == 1:
+        #    break
     return value
 
 
 def min_value(board):
-    #for row in board:
-    #    print(row)
-    #print()
-    #sleep(2)
+
     if terminal(board):
-        return utility(board)
+        value = utility(board)
+        return value
     value = float('inf')
     for action in actions(board):
-        value = min(value, max_value(result(board, action)))
+        new_possible_value = max_value(result(board, action))
+        value = min(value, new_possible_value)
+        #if value == -1:
+        #    break
     return value
 
 
 def check_for_horizontal_win(board):
-    current_player = X if player(board) == O else O
-    for row in board:
-        consecutive_counter = 0
-        for field in row:
-            if field != current_player:
-                consecutive_counter = 0
-                break
-            else:
-                consecutive_counter += 1
-                if consecutive_counter > 2:
-                    return current_player
+    players = [X, O]
+    for player in players:
+        for row in board:
+            consecutive_counter = 0
+            for field in row:
+                if field != player:
+                    consecutive_counter = 0
+                    break
+                else:
+                    consecutive_counter += 1
+                    if consecutive_counter > len(board)-1:
+                        return player
     return None
 
 
