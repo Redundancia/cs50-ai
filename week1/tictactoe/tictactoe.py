@@ -142,6 +142,8 @@ def max_value(board,local_min=float('-inf'), local_max=float('inf')):
         return value
     for action in actions(board):
         new_possible_value = min_value(result(board,action),local_min=local_min, local_max=local_max)
+        if local_max <= new_possible_value:
+            return new_possible_value
         value = max(value, new_possible_value)
         local_min = value
     return value
@@ -157,6 +159,7 @@ def min_value(board,local_min=float('-inf'), local_max=float('inf')):
         if local_min >= new_possible_value:
             return new_possible_value
         value = min(value, new_possible_value)
+        local_max = value
     return value
 
 
