@@ -12,21 +12,46 @@ CKnave = Symbol("C is a Knave")
 # Puzzle 0
 # A says "I am both a knight and a knave."
 knowledge0 = And(
-    # TODO
+    # Rules knowledge
+    Biconditional(AKnight, Not(AKnave)),
+    Biconditional(AKnave, Not(AKnight)),
+
+    # Info from characters
+    Biconditional(AKnight, And(AKnave, AKnight))
+    #Or(And(AKnight, And(AKnave, AKnight)),And(AKnave, Not(And(AKnave, AKnight))))
+    
 )
 
 # Puzzle 1
 # A says "We are both knaves."
 # B says nothing.
 knowledge1 = And(
-    # TODO
+    # Rules knowledge
+    Biconditional(AKnight, Not(AKnave)),
+    Biconditional(AKnave, Not(AKnight)),
+    Biconditional(BKnight, Not(BKnave)),
+    Biconditional(BKnave, Not(BKnight)),
+
+    # Info from characters
+    Biconditional(AKnight, And(AKnave, BKnave))
+    #Or(And(AKnight, And(AKnave, BKnave)), And(AKnave, Not(And(AKnave, BKnave))))
+
 )
 
 # Puzzle 2
 # A says "We are the same kind."
 # B says "We are of different kinds."
 knowledge2 = And(
-    # TODO
+    # Rules knowledge
+    Biconditional(AKnight, Not(AKnave)),
+    Biconditional(AKnave, Not(AKnight)),
+    Biconditional(BKnight, Not(BKnave)),
+    Biconditional(BKnave, Not(BKnight)),
+    
+    # Info from characters
+    Biconditional(AKnight, Or(And(AKnight, BKnight), And(AKnave, BKnave))),
+    Biconditional(BKnight, Or(And(AKnight, BKnave), And(AKnave, BKnight)))
+
 )
 
 # Puzzle 3
@@ -35,7 +60,20 @@ knowledge2 = And(
 # B says "C is a knave."
 # C says "A is a knight."
 knowledge3 = And(
-    # TODO
+    # Rules Knowledge
+    Biconditional(AKnight, Not(AKnave)),
+    Biconditional(AKnave, Not(AKnight)),
+    Biconditional(BKnight, Not(BKnave)),
+    Biconditional(BKnave, Not(BKnight)),
+    Biconditional(CKnight, Not(CKnave)),
+    Biconditional(CKnave, Not(CKnight)),
+    
+    # Info from characters
+    Biconditional(AKnight, Or(AKnight, AKnave)), # This might be redundant cause it can mean any option?
+    Biconditional(BKnight, Biconditional(AKnight, AKnave)),
+    Biconditional(BKnight, CKnave),
+    Biconditional(CKnight, AKnight)
+
 )
 
 
