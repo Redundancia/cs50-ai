@@ -72,6 +72,8 @@ def transition_model(corpus, page, damping_factor):
     for sub_page in corpus[page]:
         probability_distribution[sub_page] = probability_distribution.get(sub_page, 0) + ((1 / number_of_sub_pages) * damping_factor)
     
+    if round(sum(probability_distribution.values()),4) != 1:
+        print(f"something wrong with transition_model: {round(sum(probability_distribution.values()),4)}")
     return probability_distribution
 
 def sample_pagerank(corpus, damping_factor, n):
@@ -83,8 +85,30 @@ def sample_pagerank(corpus, damping_factor, n):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
+    
+    sample_dictionary = {}
     page = random.choice(list(corpus.keys()))
-    transition_model(corpus, page, damping_factor)
+    transition_probabilities = transition_model(corpus, page, damping_factor)
+    sample_dictionary[page] = 1
+
+    for i in range(n-1):
+        random_number_to_decide_new_page = random.random()
+        probability_calculation = 0
+        for sub_page, probability in transition_probabilities.items():
+            probability_calculation += probability
+            if probability_calculation > random_number_to_decide_new_page:
+                sample_dictionary[sub_page] = sample_dictionary.get(sub_page, 0) + 1
+                transition_probabilities = transition_model(corpus, sub_page, damping_factor)
+                break
+
+    for page, probability in sample_dictionary.items():
+        sample_dictionary[page] /= n
+    
+    if round(sum(sample_dictionary.values()),4) != 1:
+        print(f"something wrong with sample_pagerank: {round(sum(sample_dictionary.values()),4)}")
+
+    return sample_dictionary
+
 
 
 def iterate_pagerank(corpus, damping_factor):
