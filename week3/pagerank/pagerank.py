@@ -87,7 +87,11 @@ def sample_pagerank(corpus, damping_factor, n):
     """
     
     sample_dictionary = {}
+
+    # Pick random page
     page = random.choice(list(corpus.keys()))
+
+    # Do the first calculation outside of loop, loop could be refactored to make this redundant
     transition_probabilities = transition_model(corpus, page, damping_factor)
     sample_dictionary[page] = 1
 
@@ -96,11 +100,15 @@ def sample_pagerank(corpus, damping_factor, n):
         probability_calculation = 0
         for sub_page, probability in transition_probabilities.items():
             probability_calculation += probability
+            # Check if random picked the given sub_page
             if probability_calculation > random_number_to_decide_new_page:
+                
+                # Increment dict value for sub_page, these values are occurences, will be calculated into probability
                 sample_dictionary[sub_page] = sample_dictionary.get(sub_page, 0) + 1
                 transition_probabilities = transition_model(corpus, sub_page, damping_factor)
                 break
 
+    # Turn the dictionary values into probabilities(0-1)
     for page, probability in sample_dictionary.items():
         sample_dictionary[page] /= n
     
@@ -120,7 +128,12 @@ def iterate_pagerank(corpus, damping_factor):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-    raise NotImplementedError
+    iterative_dictionary = {}
+    number_of_pages = len(corpus)
+    
+    # Setup starting probabilities
+    for page, sub_pages in corpus.items():
+        iterative_dictionary[page] = 1 / number_of_pages
 
 
 if __name__ == "__main__":
