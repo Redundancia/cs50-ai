@@ -139,8 +139,121 @@ def joint_probability(people, one_gene, two_genes, have_trait):
         * everyone in set `have_trait` has the trait, and
         * everyone not in set` have_trait` does not have the trait.
     """
-    raise NotImplementedError
+    individual_probabilities = {}
+    for person in people:
+        if person not in individual_probabilities:
+            calculate_probability(people, one_gene, two_genes, have_trait, person, individual_probabilities)
+    print(individual_probabilities)
+    joint_probability = 1
+    for prob in individual_probabilities.values():
+        joint_probability *= prob
+    print(joint_probability)
+    return joint_probability
 
+
+def calculate_probability(people, one_gene, two_genes, have_trait, person, individual_probabilities):
+    """
+    Calculate the probability for given person and ancestors that she/he has/does not have the trait.
+    """
+
+    gene_probability = 1
+    trait_probability = 1
+
+    # If he doesn't have mother, he doesn't have father either, and we can calculate from the global values PROBS
+    if people[person]['mother'] == None:
+        if person in one_gene:
+            gene_probability = PROBS["gene"][1]
+            trait_probability = PROBS["trait"][1][True] if person in have_trait else PROBS["trait"][1][False]
+        elif person in two_genes:
+            gene_probability = PROBS["gene"][2]
+            trait_probability = PROBS["trait"][2][True] if person in have_trait else PROBS["trait"][2][False]
+        else:
+            gene_probability = PROBS["gene"][0]
+            trait_probability = PROBS["trait"][0][True] if person in have_trait else PROBS["trait"][0][False]
+    
+    # We calculate probabilities according to the amount of copy of genes person has
+    else:
+        # If parent's probability is not yet calculated, we calculate it first
+        if people[person]['mother'] not in individual_probabilities:
+            calculate_probability(people, one_gene, two_genes, have_trait, people[person]['mother'], individual_probabilities)
+            calculate_probability(people, one_gene, two_genes, have_trait, people[person]['father'], individual_probabilities)
+
+        # Person has 1 gene, two ways this can happen:
+        if person in one_gene:
+            # First way: gets one from mother
+            if people[person]["mother"] in one_gene:
+                gene_probability *= 0.5
+            elif people[person]["mother"] in two_genes:
+                gene_probability *= 1 - PROBS["mutation"]
+            else:
+                gene_probability *= PROBS["mutation"]
+            # No gene from father
+            if people[person]["father"] in one_gene:
+                gene_probability *= 0.5
+            elif people[person]["father"] in two_genes:
+                gene_probability *= PROBS["mutation"]
+            else:
+                gene_probability *= 1 - PROBS["mutation"]
+
+            # Second way: gets one from father, but not from mother, this might be redundant, but for sure could be refactored with the one above
+            if people[person]["father"] in one_gene:
+                gene_probability *= 0.5
+            elif people[person]["father"] in two_genes:
+                gene_probability *= 1 - PROBS["mutation"]
+            else:
+                gene_probability *= PROBS["mutation"]
+            # No gene from mother
+            if people[person]["mother"] in one_gene:
+                gene_probability *= 0.5
+            elif people[person]["mother"] in two_genes:
+                gene_probability *= PROBS["mutation"]
+            else:
+                gene_probability *= 1 - PROBS["mutation"]
+        
+            # Person with 1 gene trait probability
+            trait_probability = PROBS["trait"][1][True] if person in have_trait else PROBS["trait"][1][False]
+
+        # Person has 2 genes, gets one from both parents
+        elif person in two_genes:
+            if people[person]["mother"] in one_gene:
+                gene_probability *= 0.5
+            elif people[persong]["mother"] in two_genes:
+                gene_probability *= 1 - PROBS["mutation"]
+            else:
+                gene_probability *= PROBS["mutation"]
+
+            if people[person]["father"] in one_gene:
+                gene_probability *= 0.5
+            elif people[person]["father"] in two_genes:
+                gene_probability *= 1 - PROBS["mutation"]
+            else:
+                gene_probability *= PROBS["mutation"]
+
+            # Person with 2 genes trait probability
+            trait_probability = PROBS["trait"][2][True] if person in have_trait else PROBS["trait"][2][False]
+
+
+        # Person has 0 genes, inherits no genes
+        else:
+            if people[person]["mother"] in one_gene:
+                gene_probability *= 0.5
+            elif people[person]["mother"] in two_genes:
+                gene_probability *= PROBS["mutation"]
+            else:
+                gene_probability *= 1 - PROBS["mutation"]
+
+            if people[person]["father"] in one_gene:
+                gene_probability *= 0.5
+            elif people[person]["father"] in two_genes:
+                gene_probability *= PROBS["mutation"]
+            else:
+                gene_probability *= 1 - PROBS["mutation"]
+
+            # Person with 0 genes trait probability
+            trait_probability = PROBS["trait"][0][True] if person in have_trait else PROBS["trait"][0][False]
+
+
+    individual_probabilities[person] = gene_probability * trait_probability
 
 def update(probabilities, one_gene, two_genes, have_trait, p):
     """
