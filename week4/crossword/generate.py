@@ -1,7 +1,9 @@
 import sys
 
-from crossword import *
+from numpy import var
 
+from crossword import *
+from queue import Queue
 
 class CrosswordCreator():
 
@@ -103,7 +105,8 @@ class CrosswordCreator():
             for word in value.copy():
                 if len(word) != key.length:
                     self.domains[key].remove(word)
-
+        print("self.domains after unary node consistency applied:")
+        print(self.domains)
 
     def revise(self, x, y):
         """
@@ -115,24 +118,29 @@ class CrosswordCreator():
         False if no revision was made.
         """
         revision_made = False
-        # 2 value can only overlap in one position if, if you make that word can change direction you will just need another for loop to get all overlaps
+        # 2 value can only overlap in one position if, if you make that word can change direction you will just need a for loop to get all overlaps
+        
         # first we get the overlapping position
-        overlapping_positions = tuple()
-        for key, value in self.crossword.overlaps.items():
-            if x == key(0) and y == key(1):
-                overlapping_positions = value
-                break
-        # iterate over overlaps and because overlaps
-        for x_value,x_keys in self.domains[x].items():
+        overlapping_positions = self.crossword.overlaps[(x, y)]
+        print(f"overlapping position: {overlapping_positions}")
+        # Quit asap if they have no overlap
+        if overlapping_positions == None:
+            return revision_made
+        
+        print(f"self.domains[x]: {self.domains[x]}")
+        for x_value in self.domains[x].copy():
+            print(f"self.domains' key {x}: value: {x_value}")
             at_least_one_y_corresponds = False
-            for y_value,y_keys in self.domains[y].items():
+            for y_value in self.domains[y]:
                 # check if in the 2 words, the corresponding characters are the same
-                # TODO test what happens with None value
                 if x_value[overlapping_positions[0]] == y_value[overlapping_positions[1]]:
+                    print(f"there was a corresponding value, keep {x_value} for {y_value}")
                     at_least_one_y_corresponds = True
+                    break
             if at_least_one_y_corresponds == False:
+                print(f"there was no corresponding value, trying to delete {x}")
+                self.domains[x].remove(x_value)
                 revision_made = True
-                self.domains.remove(x)
         return revision_made
 
     def ac3(self, arcs=None):
@@ -144,7 +152,27 @@ class CrosswordCreator():
         Return True if arc consistency is enforced and no domains are empty;
         return False if one or more domains end up empty.
         """
-        raise NotImplementedError
+        print("self.crossword.overlaps:")
+        print(self.crossword.overlaps)
+        queue = Queue(maxsize = 0)
+        # if arcs are empty, we just fill it up with every overlap/arc we have
+        if arcs == None:
+            for key, value in self.crossword.overlaps.items():
+                queue.put(key)
+
+        while not queue.empty():
+            variable = queue.get()
+            print(variable)
+            if self.revise(variable[0],variable[1]):
+                # check if we have zero items left in our domain, if so we have no solution
+                if len(self.domains[variable[0]]) == 0:
+                    return False
+                print(f"crossword neighbors: {self.crossword.neighbors(variable[0])}")
+                for neighbor in self.crossword.neighbors(variable[0]):
+                    # i put this if here maybe redundant or wrong, if i leave this if out i don't think it will matter, but using this might save some time? 
+                    if neighbor != variable[1]:
+                        queue.put((neighbor,variable[0]))
+        return True
 
     def assignment_complete(self, assignment):
         """
