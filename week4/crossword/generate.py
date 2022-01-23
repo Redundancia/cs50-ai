@@ -99,8 +99,11 @@ class CrosswordCreator():
         (Remove any values that are inconsistent with a variable's unary
          constraints; in this case, the length of the word.)
         """
-        for var in self.domains:
-            print(var)
+        for key,value in self.domains.items():
+            for word in value.copy():
+                if len(word) != key.length:
+                    self.domains[key].remove(word)
+
 
     def revise(self, x, y):
         """
@@ -111,7 +114,26 @@ class CrosswordCreator():
         Return True if a revision was made to the domain of `x`; return
         False if no revision was made.
         """
-        raise NotImplementedError
+        revision_made = False
+        # 2 value can only overlap in one position if, if you make that word can change direction you will just need another for loop to get all overlaps
+        # first we get the overlapping position
+        overlapping_positions = tuple()
+        for key, value in self.crossword.overlaps.items():
+            if x == key(0) and y == key(1):
+                overlapping_positions = value
+                break
+        # iterate over overlaps and because overlaps
+        for x_value,x_keys in self.domains[x].items():
+            at_least_one_y_corresponds = False
+            for y_value,y_keys in self.domains[y].items():
+                # check if in the 2 words, the corresponding characters are the same
+                # TODO test what happens with None value
+                if x_value[overlapping_positions[0]] == y_value[overlapping_positions[1]]:
+                    at_least_one_y_corresponds = True
+            if at_least_one_y_corresponds == False:
+                revision_made = True
+                self.domains.remove(x)
+        return revision_made
 
     def ac3(self, arcs=None):
         """
