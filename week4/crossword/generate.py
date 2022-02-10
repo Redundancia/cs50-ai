@@ -105,8 +105,8 @@ class CrosswordCreator():
             for word in value.copy():
                 if len(word) != key.length:
                     self.domains[key].remove(word)
-        print("self.domains after unary node consistency applied:")
-        print(self.domains)
+        # print("self.domains after unary node consistency applied:")
+        # print(self.domains)
 
     def revise(self, x, y):
         """
@@ -122,23 +122,23 @@ class CrosswordCreator():
         
         # first we get the overlapping position
         overlapping_positions = self.crossword.overlaps[(x, y)]
-        print(f"overlapping position: {overlapping_positions}")
+        # print(f"overlapping position: {overlapping_positions}")
         # Quit asap if they have no overlap
         if overlapping_positions == None:
             return revision_made
         
-        print(f"self.domains[x]: {self.domains[x]}")
+        # print(f"self.domains[x]: {self.domains[x]}")
         for x_value in self.domains[x].copy():
-            print(f"self.domains' key {x}: value: {x_value}")
+            # print(f"self.domains' key {x}: value: {x_value}")
             at_least_one_y_corresponds = False
             for y_value in self.domains[y]:
                 # check if in the 2 words, the corresponding characters are the same
                 if x_value[overlapping_positions[0]] == y_value[overlapping_positions[1]]:
-                    print(f"there was a corresponding value, keep {x_value} for {y_value}")
+                    # print(f"there was a corresponding value, keep {x_value} for {y_value}")
                     at_least_one_y_corresponds = True
                     break
             if at_least_one_y_corresponds == False:
-                print(f"there was no corresponding value, trying to delete {x}")
+                # print(f"there was no corresponding value, trying to delete {x}")
                 self.domains[x].remove(x_value)
                 revision_made = True
         return revision_made
@@ -152,8 +152,8 @@ class CrosswordCreator():
         Return True if arc consistency is enforced and no domains are empty;
         return False if one or more domains end up empty.
         """
-        print("self.crossword.overlaps:")
-        print(self.crossword.overlaps)
+        # print("self.crossword.overlaps:")
+        # print(self.crossword.overlaps)
         queue = Queue(maxsize = 0)
         # if arcs are empty, we just fill it up with every overlap/arc we have
         if arcs == None:
@@ -162,12 +162,12 @@ class CrosswordCreator():
 
         while not queue.empty():
             variable = queue.get()
-            print(variable)
+            # print(variable)
             if self.revise(variable[0],variable[1]):
                 # check if we have zero items left in our domain, if so we have no solution
                 if len(self.domains[variable[0]]) == 0:
                     return False
-                print(f"crossword neighbors: {self.crossword.neighbors(variable[0])}")
+                # print(f"crossword neighbors: {self.crossword.neighbors(variable[0])}")
                 for neighbor in self.crossword.neighbors(variable[0]):
                     # i put this if here maybe redundant or wrong, if i leave this if out i don't think it will matter, but using this might save some time? 
                     if neighbor != variable[1]:
@@ -180,7 +180,7 @@ class CrosswordCreator():
         crossword variable); return False otherwise.
         """
         for variable in assignment:
-            print(f"variable: {variable}")
+            # print(f"variable: {variable}")
             if variable == None:
                 return False
         return True
@@ -190,6 +190,9 @@ class CrosswordCreator():
         Return True if `assignment` is consistent (i.e., words fit in crossword
         puzzle without conflicting characters); return False otherwise.
         """
+        # print('assignment:')
+        # print(assignment)
+        # print()
         values = set()
         for key,value in assignment.items():
             # check if length is correct
@@ -202,12 +205,14 @@ class CrosswordCreator():
         # neighboring variables have the proper correspondence
         # iterate over overlaps
         for overlap_key, overlap_value in self.crossword.overlaps.items():
-            # if one of their values is still unassigned, move on to next one, this might not work properly
-            if overlap_key[0] not in assignment.keys() or overlap_key[1] not in assignment.keys():
+            # print (overlap_key)
+            # print (overlap_value)
+            # if one of their values is still unassigned, move on to next one, same with overlap value being None
+            if overlap_value == None or overlap_key[0] not in assignment.keys() or overlap_key[1] not in assignment.keys():
                 continue
             # check if correspondence character is the same
-            print(f"assignemnt's overlap_key-s value something 0 lol: {assignment[overlap_key[0]]}")
-            print(f"assignemnt's overlap_key-s value something 1 lol: {assignment[overlap_key[1]]}")
+            # print(f"assignemnt's overlap_key-s value something 0 lol: {assignment[overlap_key[0]]}")
+            # print(f"assignemnt's overlap_key-s value something 1 lol: {assignment[overlap_key[1]]}")
             if assignment[overlap_key[0]][overlap_value[0]] != assignment[overlap_key[1]][overlap_value[1]]:
                 return False
         return True
