@@ -100,7 +100,23 @@ def evaluate(labels, predictions):
     representing the "true negative rate": the proportion of
     actual negative labels that were accurately identified.
     """
-    raise NotImplementedError
+    sensitivity_numerator = 0
+    sensitivity_denominator = 0
+    specificity_numerator = 0
+    sepcificity_denominator = 0
+    for index in range(len(labels)):
+        if labels[index] == predictions[index]:
+            if labels[index] == 1:
+                sensitivity_numerator += 1
+                sensitivity_denominator += 1
+            else:
+                specificity_numerator += 1
+                sepcificity_denominator += 1
+        elif labels[index] == 1:
+            sensitivity_denominator += 1
+        else:
+            sepcificity_denominator += 1
+    return (sensitivity_numerator/sensitivity_denominator, specificity_numerator/sepcificity_denominator)
 
 
 def row_translate_values(row_data):
