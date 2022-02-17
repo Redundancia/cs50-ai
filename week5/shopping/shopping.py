@@ -59,8 +59,20 @@ def load_data(filename):
     labels should be the corresponding list of labels, where each label
     is 1 if Revenue is true, and 0 otherwise.
     """
-    raise NotImplementedError
 
+    # Setup data containers
+    evidences = []
+    labels = []
+
+    # Open data file
+    import csv
+    with open('shopping.csv', newline='') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            row_translated_values = row_translate_values(row)
+            labels.append(row_translated_values[0])
+            evidences.append(row_translated_values[1])
+    return (evidences, labels)
 
 def train_model(evidence, labels):
     """
@@ -87,6 +99,55 @@ def evaluate(labels, predictions):
     """
     raise NotImplementedError
 
+
+def row_translate_values(row_data):
+    """
+    Given a dictionary, translate and return the values into float/int depending on the key
+    """
+    
+    row_evidence = []
+    for key,value in row_data.items():
+        if key == "Revenue":
+            if value == "FALSE":
+                label = (0)
+            else:
+                label = (1)
+        elif key == "Month":
+            row_evidence.append(month_string_to_number(value))
+        elif key == "VisitorType":
+            if value == "Returning_Visitor":
+                row_evidence.append(1)
+            else:
+                row_evidence.append(0)
+        elif key == "Weekend":
+            if value == "FALSE":
+                row_evidence.append(0)
+            else:
+                row_evidence.append(1)
+        else:
+            row_evidence.append(float(value))
+    return (label,row_evidence)
+
+def month_string_to_number(month):
+    """
+    Given a month, return month as int, starting with index 0(January)
+    Handle upper/lowercases, handle full months name inputs and shorthands as well
+    """
+    months = {
+        'jan': 0,
+        'feb': 1,
+        'mar': 2,
+        'apr': 3,
+        'may': 4,
+        'jun': 5,
+        'jul': 6,
+        'aug': 7,
+        'sep': 8,
+        'oct': 9,
+        'nov': 10,
+        'dec': 11
+        }
+    return months[month.strip()[:3].lower()]
 
 if __name__ == "__main__":
     main()
