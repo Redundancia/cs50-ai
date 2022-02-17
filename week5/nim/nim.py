@@ -130,7 +130,13 @@ class NimAI():
         Q-value in `self.q`. If there are no available actions in
         `state`, return 0.
         """
-        raise NotImplementedError
+        
+        # if we know maximum size of action value, we don't have to iterate over every single dictionary item, which could decrease bigO
+        max_q = 0
+        for key,Q_value in self.q.items():
+            if key[0] == tuple(state):
+                max_q = max(max_q,Q_value)
+        return max_q
 
     def choose_action(self, state, epsilon=True):
         """

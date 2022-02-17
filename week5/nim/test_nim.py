@@ -22,3 +22,35 @@ def test_update_q_value_stored():
     player = nim.NimAI()
     player.update_q_value(state, action, old_q, reward, future_rewards) 
     assert player.get_q_value(state,action) == old_q + player.alpha * (reward + future_rewards - old_q)
+
+def test_best_future_reward_valid():
+    state = [1,2,3]
+    action = 1
+    action2 = 2
+    old_q = 0.5
+    reward = 1
+    reward2 = 2
+    future_rewards = 1.2
+    player = nim.NimAI()
+    player.update_q_value(state, action, old_q, reward, future_rewards) 
+    player.update_q_value(state, action2, old_q, reward2, future_rewards)
+    assert player.best_future_reward(state) == player.get_q_value(state,action2)
+
+def test_best_future_reward_no_data():
+    state = [1,2,3]
+    state_no_q_value = [3,2,1]
+    action = 1
+    action2 = 2
+    old_q = 0.5
+    reward = 1
+    reward2 = 2
+    future_rewards = 1.2
+    player = nim.NimAI()
+    player.update_q_value(state, action, old_q, reward, future_rewards) 
+    player.update_q_value(state, action2, old_q, reward2, future_rewards)
+    assert player.best_future_reward(state_no_q_value) == 0
+
+def test_best_future_reward_empty():
+    state = [1,2,3]
+    player = nim.NimAI()
+    assert player.best_future_reward(state) == 0
