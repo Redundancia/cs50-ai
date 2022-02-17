@@ -108,22 +108,13 @@ def row_translate_values(row_data):
     row_evidence = []
     for key,value in row_data.items():
         if key == "Revenue":
-            if value == "FALSE":
-                label = (0)
-            else:
-                label = (1)
+            label = 0 if value == "FALSE" else 1
         elif key == "Month":
             row_evidence.append(month_string_to_number(value))
         elif key == "VisitorType":
-            if value == "Returning_Visitor":
-                row_evidence.append(1)
-            else:
-                row_evidence.append(0)
+            row_evidence.append(1 if value == "Returning_Visitor" else 0)
         elif key == "Weekend":
-            if value == "FALSE":
-                row_evidence.append(0)
-            else:
-                row_evidence.append(1)
+            row_evidence.append(0 if value == "FALSE" else 1)
         else:
             row_evidence.append(float(value))
     return (label,row_evidence)
