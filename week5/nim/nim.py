@@ -1,6 +1,9 @@
 import math
 import random
 import time
+from zoneinfo import available_timezones
+
+from numpy import number
 
 
 class Nim():
@@ -153,7 +156,25 @@ class NimAI():
         If multiple actions have the same Q-value, any of those
         options is an acceptable return value.
         """
-        raise NotImplementedError
+        is_random_action = random.random() <= epsilon
+        if epsilon == True and is_random_action:
+            return self.get_random_action(state)
+        else:
+            best_action_value = self.best_future_reward(state)
+            for key,Q_value in self.q.items():
+                if key[0] == tuple(state) and Q_value == best_action_value:
+                    return key[1]
+            return 0
+    
+    def get_random_action(self,state):
+        """
+        Given a state 'state', generate all possible actions and return a random action '(i,j)'.
+        """
+        possible_actions = []
+        for index,pile in enumerate(state):
+            for number_to_take_away in range(1,pile+1):
+                possible_actions.append((index,number_to_take_away))
+        return random.choice(possible_actions)
 
 
 def train(n):
