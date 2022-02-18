@@ -1,10 +1,5 @@
-import math
 import random
 import time
-from zoneinfo import available_timezones
-
-from numpy import number
-
 
 class Nim():
 
