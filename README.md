@@ -38,9 +38,7 @@ that enable them to design intelligent systems of their own.
 
 <div>Shopping:</div>
     <li>Write an AI to predict whether online shopping customers will complete a purchase.</li>
-    <span>![image](https://user-images.githubusercontent.com/29804993/155796181-e4a1e4cc-1e67-43ba-a47d-534419e63930.png)
-</span>
 
-
+![image](https://user-images.githubusercontent.com/29804993/155798305-f7535022-7749-4ff3-bbdf-482a74826d4a.png)
 <div>Nim:</div>
     <li>Write an AI that teaches itself to play Nim through reinforcement learning.</li>
