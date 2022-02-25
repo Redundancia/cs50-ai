@@ -16,31 +16,31 @@ that enable them to design intelligent systems of their own.
     <li>Write an AI that can play tic-tac-toe, with minimax and alpha-beta pruning.</li>
 
 
-Knights: 
+<div>Knights:</div> 
     <li>Solve knowledge base logical puzzles, with defining base knowledge and current game knowledge.</li>
 
 
-Minesweeper:
+<div>Minesweeper:</div>
     <li>Write a AI that can play minesweeper, make the best move from her knowledbe base and add to it. Mostly wins, guesses are unavoidable in some cases.</li>
 
 
-PageRank:
+<div>PageRank:</div>
     <li>Write an AI to rank web pages by importance, using Markov Chain.</li>
 
 
-Heredity:
+<div>Heredity:</div>
     <li>Write an AI to assess the likelihood that a person will have a particular genetic trait, using join probabilities and normalisation.</li>
 
 
-Crossword:
+<div>Crossword:</div>
     <li>Write an AI to generate crossword puzzles using arc consistency.</li>
 
 
-Shopping:
+<div>Shopping:</div>
     <li>Write an AI to predict whether online shopping customers will complete a purchase.</li>
     <span>![image](https://user-images.githubusercontent.com/29804993/155796181-e4a1e4cc-1e67-43ba-a47d-534419e63930.png)
 </span>
 
 
-Nim:
+<div>Nim:</div>
     <li>Write an AI that teaches itself to play Nim through reinforcement learning.</li>
