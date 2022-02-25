@@ -7,29 +7,40 @@ reinforcement learning, and other topics in artificial intelligence and machine 
 By course’s end, students emerge with experience in libraries for machine learning as well as knowledge of artificial intelligence principles 
 that enable them to design intelligent systems of their own.
 
+
 Degrees:
-    Determine how many degrees of separation/connection two people are with breath-first search.
+   <p> Determine how many degrees of separation/connection two people are with breath-first search.</p>
+
 
 Tic-tac-toe:
-    Write an AI that can play tic-tac-toe, with minimax and alpha-beta pruning.
+    <p>Write an AI that can play tic-tac-toe, with minimax and alpha-beta pruning.</p>
+
 
 Knights: 
-    Solve knowledge base logical puzzles, with defining base knowledge and current game knowledge.
+    <p>Solve knowledge base logical puzzles, with defining base knowledge and current game knowledge.</p>
+
 
 Minesweeper:
-    write a AI that can play minesweeper, make the best move from her knowledbe base and add to it. Mostly wins, guesses are unavoidable in some cases.
+    <p>Write a AI that can play minesweeper, make the best move from her knowledbe base and add to it. Mostly wins, guesses are unavoidable in some cases.</p>
+
 
 PageRank:
-    Write an AI to rank web pages by importance, using Markov Chain.
+    <p>Write an AI to rank web pages by importance, using Markov Chain.</p>
+
 
 Heredity:
-    Write an AI to assess the likelihood that a person will have a particular genetic trait, using join probabilities and normalisation.
+    <p>Write an AI to assess the likelihood that a person will have a particular genetic trait, using join probabilities and normalisation.</p>
+
 
 Crossword:
-    Write an AI to generate crossword puzzles using arc consistency.
+    <p>Write an AI to generate crossword puzzles using arc consistency.</p>
+
 
 Shopping:
-    Write an AI to predict whether online shopping customers will complete a purchase.
+    <p>Write an AI to predict whether online shopping customers will complete a purchase.</p>
+    <p>![image](https://user-images.githubusercontent.com/29804993/155796181-e4a1e4cc-1e67-43ba-a47d-534419e63930.png)
+</p>
+
 
 Nim:
-    Write an AI that teaches itself to play Nim through reinforcement learning.
+    <p>Write an AI that teaches itself to play Nim through reinforcement learning.</p>
