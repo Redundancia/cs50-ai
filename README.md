@@ -8,39 +8,39 @@ By course’s end, students emerge with experience in libraries for machine lear
 that enable them to design intelligent systems of their own.
 
 
-Degrees:
-   <p> Determine how many degrees of separation/connection two people are with breath-first search.</p>
+<div>Degrees:</div>
+   <li> Determine how many degrees of separation/connection two people are with breath-first search.</li>
 
 
-Tic-tac-toe:
-    <p>Write an AI that can play tic-tac-toe, with minimax and alpha-beta pruning.</p>
+<div>Tic-tac-toe:</div>
+    <li>Write an AI that can play tic-tac-toe, with minimax and alpha-beta pruning.</li>
 
 
 Knights: 
-    <p>Solve knowledge base logical puzzles, with defining base knowledge and current game knowledge.</p>
+    <li>Solve knowledge base logical puzzles, with defining base knowledge and current game knowledge.</li>
 
 
 Minesweeper:
-    <p>Write a AI that can play minesweeper, make the best move from her knowledbe base and add to it. Mostly wins, guesses are unavoidable in some cases.</p>
+    <li>Write a AI that can play minesweeper, make the best move from her knowledbe base and add to it. Mostly wins, guesses are unavoidable in some cases.</li>
 
 
 PageRank:
-    <p>Write an AI to rank web pages by importance, using Markov Chain.</p>
+    <li>Write an AI to rank web pages by importance, using Markov Chain.</li>
 
 
 Heredity:
-    <p>Write an AI to assess the likelihood that a person will have a particular genetic trait, using join probabilities and normalisation.</p>
+    <li>Write an AI to assess the likelihood that a person will have a particular genetic trait, using join probabilities and normalisation.</li>
 
 
 Crossword:
-    <p>Write an AI to generate crossword puzzles using arc consistency.</p>
+    <li>Write an AI to generate crossword puzzles using arc consistency.</li>
 
 
 Shopping:
-    <p>Write an AI to predict whether online shopping customers will complete a purchase.</p>
-    <p>![image](https://user-images.githubusercontent.com/29804993/155796181-e4a1e4cc-1e67-43ba-a47d-534419e63930.png)
-</p>
+    <li>Write an AI to predict whether online shopping customers will complete a purchase.</li>
+    <span>![image](https://user-images.githubusercontent.com/29804993/155796181-e4a1e4cc-1e67-43ba-a47d-534419e63930.png)
+</span>
 
 
 Nim:
-    <p>Write an AI that teaches itself to play Nim through reinforcement learning.</p>
+    <li>Write an AI that teaches itself to play Nim through reinforcement learning.</li>
