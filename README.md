@@ -42,3 +42,6 @@ that enable them to design intelligent systems of their own.
 ![image](https://user-images.githubusercontent.com/29804993/155798305-f7535022-7749-4ff3-bbdf-482a74826d4a.png)
 <div>Nim:</div>
     <li>Write an AI that teaches itself to play Nim through reinforcement learning.</li>
+
+<div>Traffic:</div>
+    <li>Use TensorFlow to build a neural network to classify road signs based on an image of those signs from a labeled dataset.</li>
